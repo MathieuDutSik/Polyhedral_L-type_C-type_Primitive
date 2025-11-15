@@ -1,0 +1,9 @@
+return [ rec(
+      eSymb := "1,1;1;1",
+      i := 5 ), rec(
+      eSymb := "1,1;1;1",
+      i := 5 ), rec(
+      eSymb := "2-2;1;1",
+      i := 4 ), rec(
+      eSymb := "4-2",
+      i := 2 ) ];

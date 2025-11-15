@@ -1,0 +1,59 @@
+INSTALLATIONSBESCHREIBUNG FÜR "DVLATCLASS" 
+--------------------------------------------------------
+
+Programm zur Klassifikation von Gittern
+anhand der GL_n(Z)-Äquivalenz ihrer Dirichlet-Voronoi-Zellen (L-Typen)
+
+Eine ausführliche Dokumentation des Programms findet man hier:
+http://www.math.uni-rostock.de/~waldmann/
+
+Das Programm wurde für und unter einem Linux-basierten Betriebssystem
+entwickelt. Nutzer anderer Betriebssysteme müssen sich selbst helfen.
+
+1. Installation von lrs, scc und ISOM:
+    - lrs von http://cgm.cs.mcgill.ca/~avis/C/lrs.html runterladen und
+      Installationsbeschreibung dort folgen
+    - scc von http://www.math.uni-magdeburg.de/lattice_geometry/ runterladen und
+      Installationsbeschreibung dort folgen
+      (Hinweis zu Abhängigkeiten (global installieren): 
+	    - NTL: www.shoup.net/ntl/ 
+	    - gmp: gmplib.org/ )
+      (Bei mir waren außerdem folgende Änderungen nötig:
+	    - in DeloneTriangulation.h Zeile 39 und 40: 
+		  + "const DeloneTriangulation D" als Argument 
+		  der Funktion "principal_domain" hinzufügen
+		  + "const DeloneTriangulation D" als Argument 
+		  der Funktion "barnes_trenerry_domain" hinzufügen
+	    - in DeloneTriangulation.cc Zeile 339 und 379:
+		  + "DeloneTriangulation D" als Argument 
+		  der Funktion "principal_domain" hinzufügen
+		  + "DeloneTriangulation D" als Argument 
+		  der Funktion "barnes_trenerry_domain" hinzufügen
+	    - in scc.cc Zeile 88:
+		  + "Del" als Argument der Funktion "principal_domain" hinzufügen
+	    - #include <stdio.h> in scc.cc, Simplex.cc, Simplex.h und
+	      #include <cstdlib> in Regulator.cc hinzufügen
+      )       
+	       
+    - ISOM_and_AUTO von http://www.math.uni-rostock.de/~waldmann/ runterladen und entpacken
+    - im Ordner ISOM_and_AUTO: "make ISOM" ausführen
+
+2. dvlatclass von http://www.math.uni-rostock.de/~waldmann/ runterladen und entpacken
+    
+3. Pfade im Programm dvlatclass richtig setzen:
+	- Children.hs: Pfad zu lrs   in Funktion lrs           in Variable lrs
+	- Scc.hs:      Pfad zu scc   in der Funktion get_sccs  bei rawSystem-Aufruf
+	- Isom.hs:     Pfad zu ISOM  in Funktion isom          in Variable isomp
+
+Zur Installation von dvlatclass werden benötigt:
+- cabal 1.20: www.haskell.org/cabal/
+- ghc 7.8.2 : www.haskell.org/ghc/ 
+- bed-and-breakfast-0.5: "git clone https://github.com/scravy/bed-and-breakfast"
+			 dann "cabal install" im Ordner bed-and-breakfast
+ 	
+4. Installation von dvlatclass:
+     im Ordner dvlatclass:  "cabal install" ausführen
+
+ 
+Aufruf für Dimension d:
+dvlatclass d

@@ -1,0 +1,245 @@
+#!/usr/bin/perl -w
+
+$uu=scalar(@ARGV);
+
+if ($uu ne 2)
+{
+    print "ConvertEngelToGAP\n";
+    print "ConvertEngelToGAP [FileI] [FileO]\n";
+    die;
+}
+
+$FileI=$ARGV[0];
+$FileO=$ARGV[1];
+
+sub IdentifyVector($)
+{
+    my ($strin) = @_;
+    @Wsplit=split(" ", $strin);
+    $strRet="[";
+    for ($iW=0; $iW<scalar(@Wsplit); $iW++)
+    {
+	if ($iW > 0)
+	{
+	    $strRet=$strRet.",";
+	}
+	$strRet=$strRet.$Wsplit[$iW];
+    }
+    $strRet=$strRet."]";
+    return $strRet;
+}
+
+sub IsLayerLine($)
+{
+    my ($strin) = @_;
+    @Rsplit=split("ayer", $strin);
+    if (scalar(@Rsplit) > 1)
+    {
+	return 1;
+    }
+    else
+    {
+	return 0;
+    }
+}
+
+
+sub LengthVector($)
+{
+    my ($strin) = @_;
+    @Lsplit=split(" ", $strin);
+    return scalar(@Lsplit);
+}
+
+
+sub IsVectorNumber($)
+{
+    my ($strin) = @_;
+    @Ssplit=split("", $strin);
+    $nbNumber=0;
+    for ($iS=0; $iS<scalar(@Ssplit); $iS++)
+    {
+	$eS=$Ssplit[$iS];
+	if ($eS ne "0" && $eS ne "1" && $eS ne "2" && $eS ne "3" && $eS ne "4" && $eS ne "5" && $eS ne "6" && $eS ne "7" && $eS ne "8" && $eS ne "9" && $eS ne "-")
+	{
+	    $IsNumber=0;
+	}
+	else
+	{
+	    $IsNumber=1;
+	}
+#	print "eS=".$eS." IsNumber=".$IsNumber."\n";
+	if ($IsNumber == 1)
+	{
+	    $nbNumber++;
+	}
+	else
+	{
+	    if ($eS ne " ")
+	    {
+		return 0;
+	    }
+	}
+    }
+    if ($nbNumber eq 0)
+    {
+	return 0;
+    }
+    return 1;
+}
+
+if (-e $FileI)
+{
+    print "File=".$FileI." is existing\n";
+}
+else
+{
+    print "File=".$FileI." is missing\n";
+    die;
+}
+
+print "FileI=".$FileI."\n";
+open(INFILE, $FileI);
+@RESUL=<INFILE>;
+close(INFILE);
+
+@RESULT=();
+for ($iR=0; $iR<scalar(@RESUL); $iR++)
+{
+    $_=$RESUL[$iR];
+    s/\n//;
+    $RESULT[$iR]=$_;
+}
+
+open(OUT, "> ".$FileO);
+
+
+
+$TheDim=5;
+print OUT "return rec(GramMat:=";
+print OUT "[";
+for ($i=1; $i<=$TheDim; $i++)
+{
+    $eLine=$RESULT[$i+2];
+    $strLine=IdentifyVector($eLine);
+    print OUT $strLine;
+    if ($i < $TheDim)
+    {
+	print OUT ",\n";
+    }
+}
+print OUT "]";
+print OUT ", ListLayer:=[";
+@ListStatus=();
+for ($iLine=$TheDim+3; $iLine<scalar(@RESULT); $iLine++)
+{
+    $eLine=$RESULT[$iLine];
+    $test=IsVectorNumber($eLine);
+    if ($test eq 1 && LengthVector($eLine) eq 5)
+    {
+	$eStatus=1;
+    }
+    else
+    {
+	$eStatus=0;
+    }
+    $ListStatus[$iLine]=$eStatus;
+#    print "iLine=".$iLine." status=".$eStatus." test=".$test." eLine=".$eLine."\n";
+}
+
+
+@ListLayerLevel=();
+$layerLevel=0;
+for ($iLine=$TheDim+3; $iLine<scalar(@RESULT); $iLine++)
+{
+    $eLine=$RESULT[$iLine];
+    $test=IsLayerLine($eLine);
+    if ($test eq 1)
+    {
+	$layerLevel++;
+    }
+    $ListLayerLevel[$iLine]=$layerLevel;
+}
+
+
+@IsFirstEntry=();
+for ($iLine=$TheDim+3; $iLine<scalar(@RESULT); $iLine++)
+{
+    $eLine=$RESULT[$iLine];
+    $eStatus=$ListStatus[$iLine];
+    if ($iLine > $TheDim+3)
+    {
+	$eStatusPrev=0;
+    }
+    else
+    {
+	$eStatusPrev=$ListStatus[$iLine-1];
+    }
+    $eFirstEntry=0;
+    $eLayerLevel=$ListLayerLevel[$iLine];
+    if ($ListStatus[$iLine] eq 1 && $ListStatus[$iLine-1] eq 0)
+    {
+	$eFirstEntry=1;
+    }
+    if ($eFirstEntry eq 1)
+    {
+	for ($iVect=0; $iVect<$eLayerLevel; $iVect++)
+	{
+	    if ($ListStatus[$iLine+$iVect] eq 0)
+	    {
+		$eFirstEntry=0;
+		print "Illogical thing at line ".$iLine."\n";
+	    }
+	}
+    }
+    $IsFirstEntry[$iLine]=$eFirstEntry;
+#    print "iLine=".$iLine." eFirstEntry=".$eFirstEntry." eLine=".$eLine."\n";
+}
+
+
+
+
+@SORT_ListFirstEntry=();
+@SORT_ListLayerLevel=();
+for ($iLine=$TheDim+3; $iLine<scalar(@RESULT); $iLine++)
+{
+    $eLine=$RESULT[$iLine];
+    $layerLevel=$ListLayerLevel[$iLine];
+    if ($IsFirstEntry[$iLine] eq 1)
+    {
+	$SORT_ListFirstEntry[scalar(@SORT_ListFirstEntry)]=$iLine;
+	$SORT_ListLayerLevel[scalar(@SORT_ListLayerLevel)]=$layerLevel;
+    }
+}
+for ($iEntry=0; $iEntry<scalar(@SORT_ListFirstEntry); $iEntry++)
+{
+    $iLine=$SORT_ListFirstEntry[$iEntry];
+    $layerLevel=$SORT_ListLayerLevel[$iEntry];
+#    print "iEntry=".$iEntry." layerLevel=".$layerLevel."\n";
+    if ($iEntry > 0)
+    {
+	print OUT ",\n";
+    }
+    print OUT "rec(layerlevel:=".$layerLevel, ", EXT:=[";
+    for ($iVect=0; $iVect<$layerLevel; $iVect++)
+    {
+	$eLine=$RESULT[$iLine+$iVect];
+	$eStatus=$ListStatus[$iLine + $iVect];
+	if ($eStatus == 0)
+	{
+	    print "Clear error in the code. Status should be 1\n";
+	    print "eLine=".$eLine."\n";
+	    die;
+	}
+	if ($iVect > 0)
+	{
+	    print OUT ",";
+	}
+	$strVect=IdentifyVector($eLine);
+	print OUT $strVect;
+    }
+    print OUT "])";
+}
+print OUT "]);\n";
+close(OUT);
+

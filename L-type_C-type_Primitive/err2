@@ -1,0 +1,45 @@
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:841
+  ListIneqA:=Concatenation(List(ListEXT, GetInequality));
+  ^^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:842
+  ListIneqA_Red:=Set(List(ListIneqA, RemoveFraction));
+  ^^^^^^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:842
+  ListIneqA_Red:=Set(List(ListIneqA, RemoveFraction));
+                          ^^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:843
+  TheSpa:=LinearDeterminedByInequalities(ListIneqA_Red);
+                                         ^^^^^^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:844
+  TheBasis:=TheSpa * BasisIntersection;
+  ^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:845
+  ListIneqB:=List(ListIneqA_Red, x->List(TheSpa, y->y*x));
+  ^^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:845
+  ListIneqB:=List(ListIneqA_Red, x->List(TheSpa, y->y*x));
+                  ^^^^^^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:846
+  EXTred:=DualDescription(ListIneqB);
+  ^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:846
+  EXTred:=DualDescription(ListIneqB);
+                          ^^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:847
+  return List(EXTred * TheBasis, RemoveFraction);
+              ^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/DirectAppliDualDesc.g:847
+  return List(EXTred * TheBasis, RemoveFraction);
+                       ^^^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/Tspace_Ctype.g:756
+  RecEXT:=CTYP_GetGramMatricesExtremeRays(TheBasis, RecIneq, n).ListGram;
+  ^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/Tspace_Ctype.g:759
+  for eGram in RecEXT.ListGram
+               ^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/Tspace_Ctype.g:764
+  return rec(ListVect:=ListVect, ListGram:=RecEXT.ListGram, EXT:=RecEXT.EXT);
+                                           ^^^^^^
+Syntax warning: Unbound global variable in /home/mathieu/opt/gap-4.11.0/pkg/MyPolyhedral/lib/Tspace_Ctype.g:764
+  return rec(ListVect:=ListVect, ListGram:=RecEXT.ListGram, EXT:=RecEXT.EXT);
+                                                                 ^^^^^^

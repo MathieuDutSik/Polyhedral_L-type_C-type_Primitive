@@ -1,0 +1,8 @@
+return [ rec(
+      str := "25167f1c7b10e14b5488c6cc12f1e159" ), rec(
+      str := "db71186f7136ef231017a1057abab3ec" ), rec(
+      str := "8babf3ad9e0b40095879f7a2044aeeef" ), rec(
+      str := "9aa41d6fde70b895c9d426c61ac381c0" ), rec(
+      str := "c3a3c4a6df708634532484da474d0ad5" ), rec(
+      str := "9c8e00b2d637a18f3a8ee7a400f71a8e" ), rec(
+      str := "843a260642fcccd7fbdd19f99450c7cd" ) ];
